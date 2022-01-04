@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Call {
     private int max;
-    private int inUse;
+
     private ArrayList<Progress>callsInProgress;
     private ArrayList<Arrival>callsToArrive;
     //function to check callsInProgress and callsToArrive and remove add every sec
@@ -20,17 +20,20 @@ public class Call {
         this.max=3;
 
         //here calls in progress:
-        this.inUse=2;
+
         //premade in progress how???
 //        this.addProgressToCallsInProgress(new Progress(4,7,1075));
 //        this.addProgressToCallsInProgress(new Progress(4,7,1086));
 
         //here calls that arrive
-        this.callsToArrive.add(new Arrival(3,6,98,1063));
-        this.callsToArrive.add(new Arrival(5,6,98,1068));
-        this.callsToArrive.add(new Arrival(1,4,98,1067));
-        this.callsToArrive.add(new Arrival(2,5,98,1069));
-        this.callsToArrive.add(new Arrival(8,7,98,1070));
+        //dont put same arrival time.
+        this.callsToArrive.add(new Arrival(3,6,30,1063));
+        this.callsToArrive.add(new Arrival(4,5,25,1174));
+        this.callsToArrive.add(new Arrival(5,6,20,1068));
+        this.callsToArrive.add(new Arrival(1,4,60,1067));
+        this.callsToArrive.add(new Arrival(2,5,42,1069));
+        this.callsToArrive.add(new Arrival(8,7,        33,1070));
+        this.callsToArrive.add(new Arrival(3,5,20,1176));
 
 
 
@@ -42,10 +45,10 @@ public class Call {
         if(Caller.checkCallPossibility(progress.getFrom(),progress.getTo())){
             Caller.callers[progress.getFrom()]=1;
             Caller.callers[progress.getTo()]=1;
-
             this.callsInProgress.add(progress);
             return true;
         }
+        ++CallCounter.busy;
         System.out.println("Call Dropped due to one of the participant being busy");
 
         return false;
@@ -56,6 +59,7 @@ public class Call {
         Caller.callers[progress.getTo()]=0;
         this.callsInProgress.remove(progress);
         System.out.println("Call has successfully Ended:"+progress);
+        ++CallCounter.completed;
     }
 
     public void checkProgressCalls(){
@@ -90,6 +94,7 @@ public class Call {
                                 //no link available call is lost
                                 System.out.println("Lost Call = "+arrival);
                             }
+                            ++CallCounter.processed;
                             if(this.getCallsToArrive().size()==0){
                                 //to prevent empty for each loop exception when progress calls empty.
                                 break;
@@ -110,6 +115,7 @@ public class Call {
             return this.addProgressToCallsInProgress(progress);
 
         }
+        ++CallCounter.blocked;
         System.out.println("The Links are full due to which call has been dropped.");
         return false;
     }
