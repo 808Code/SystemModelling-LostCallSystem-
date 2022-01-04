@@ -52,6 +52,7 @@ public class Call {
         Caller.callers[progress.getFrom()]=0;
         Caller.callers[progress.getTo()]=0;
         this.callsInProgress.remove(progress);
+        System.out.println("Call has successfully Ended:"+progress);
     }
 
     public void checkProgressCalls(){
