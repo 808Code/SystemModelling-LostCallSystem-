@@ -6,8 +6,9 @@ public class Runner {
         System.out.println(call);
         while(true){
 //            System.out.println(Caller.callers[1]);
-            call.checkProgressCalls();
             call.checkArrivalCalls();
+            call.checkProgressCalls();
+
             System.out.println("Current Clock="+Utility.clock++);
             Utility.pause();
             if(Utility.clock==3000){
@@ -21,7 +22,7 @@ public class Runner {
             for (Arrival arrival:call.getCallsToArrive()) {
                 System.out.println(arrival);
             }
-
+            CallCounter.getCallCounter();
             System.out.println("-------------------------------------------------");
         }
         System.out.println("Thankyou For Simulating our Lost Call System.");
