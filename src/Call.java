@@ -27,8 +27,11 @@ public class Call {
 
         //here calls that arrive
         this.callsToArrive.add(new Arrival(3,6,98,1063));
-        this.callsToArrive.add(new Arrival(5,6,98,1080));
-        this.callsToArrive.add(new Arrival(1,6,98,1162));
+        this.callsToArrive.add(new Arrival(5,6,98,1068));
+        this.callsToArrive.add(new Arrival(1,4,98,1067));
+        this.callsToArrive.add(new Arrival(2,5,98,1069));
+        this.callsToArrive.add(new Arrival(8,7,98,1070));
+
 
 
     }
@@ -59,7 +62,7 @@ public class Call {
         if(this.getCallsInProgress().size()!=0){
             try {
                 for (Progress progress : this.getCallsInProgress()) {
-                    System.out.println(progress);
+//                    System.out.println(progress);
                     if (progress.getEnd() == Utility.clock) {
                         this.removeProgressFromCallsInProgress(progress);
                         if (this.getCallsInProgress().size() == 0) {
@@ -69,7 +72,7 @@ public class Call {
                     }
                 }
             }catch (ConcurrentModificationException exception){
-                System.out.println(exception);
+//                System.out.println(exception);
 
             }
         }
@@ -79,7 +82,7 @@ public class Call {
         if(this.getCallsToArrive().size()!=0){
             try{
                     for (Arrival arrival:this.getCallsToArrive()) {
-                        System.out.println(arrival);
+//                        System.out.println(arrival);
                         if(arrival.getArrivalTime()==Utility.clock){
                             if(addArrivalCallToProgress(arrival)){
                                 System.out.println("Has been added to progress:"+arrival);
@@ -94,7 +97,7 @@ public class Call {
                         }
                     }
             }catch (ConcurrentModificationException exception){
-               System.out.println(exception);
+//               System.out.println(exception);
             }
         }
     }
@@ -102,7 +105,7 @@ public class Call {
 
     public Boolean addArrivalCallToProgress(Arrival arrival){
         callsToArrive.remove(arrival);
-        if(callsInProgress.size()!=3){
+        if((callsInProgress.size())!=(this.max)){
             Progress progress=ArrivalToProgress.mapArrivalToProgress(arrival);
             return this.addProgressToCallsInProgress(progress);
 
