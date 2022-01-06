@@ -2,6 +2,8 @@
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Call {
@@ -28,13 +30,31 @@ public class Call {
         //here calls that arrive
         //dont put same arrival time.
         //
-        this.callsToArrive.add(new Arrival(3,6,30,1063));
-        this.callsToArrive.add(new Arrival(4,5,25,1063));
-        this.callsToArrive.add(new Arrival(5,6,20,1068));
-        this.callsToArrive.add(new Arrival(1,4,60,1067));
-        this.callsToArrive.add(new Arrival(2,5,42,1069));
-        this.callsToArrive.add(new Arrival(8,7,33,1070));
-        this.callsToArrive.add(new Arrival(3,5,20,1176));
+
+        Random ran = new Random();
+        int firstCaller=1;
+        int lastCaller=8;
+//        for (int i=0;i<=(ThreadLocalRandom.current().nextInt(20,30));i++){
+          for(int i=0;i<=10;i++){
+
+
+            int from = ThreadLocalRandom.current().nextInt(firstCaller, lastCaller + 1);
+            int to = ThreadLocalRandom.current().nextInt(firstCaller, lastCaller + 1);
+
+            while(true){
+                if(from!=to){
+                    break;
+                }
+                to = ThreadLocalRandom.current().nextInt(firstCaller, lastCaller + 1);
+            }
+            int length =ThreadLocalRandom.current().nextInt(20,40);
+            int arrivalTime=ThreadLocalRandom.current().nextInt(1060,1070);
+//          int arrivalTime=ThreadLocalRandom.current().nextInt(1060,2000);
+            this.callsToArrive.add(new Arrival(from,to,length,arrivalTime));
+        }
+
+
+
 
 
 
@@ -84,29 +104,34 @@ public class Call {
     }
 
     public void checkArrivalCalls(){
+        ArrayList<Arrival> arrivalOnCurrentClock=new ArrayList<Arrival>();
         if(this.getCallsToArrive().size()!=0){
-            try{
+
                     for (Arrival arrival:this.getCallsToArrive()) {
-//                        System.out.println(arrival);
+
                         if(arrival.getArrivalTime()==Utility.clock){
-                            if(addArrivalCallToProgress(arrival)){
-                                System.out.println("Has been added to progress:"+arrival);
-                            }else{
-                                //no link available call is lost
-                                System.out.println("Lost Call = "+arrival);
-                            }
-                            ++CallCounter.processed;
-                            if(this.getCallsToArrive().size()==0){
-                                //to prevent empty for each loop exception when progress calls empty.
-                                break;
-                            }
+                            arrivalOnCurrentClock.add(arrival);
                         }
+
                     }
-            }catch (ConcurrentModificationException exception){
-//               System.out.println(exception);
+        }
+        for (Arrival arrival: arrivalOnCurrentClock) {
+            if(addArrivalCallToProgress(arrival)){
+                System.out.println("Has been added to progress:"+arrival);
+            }else{
+                //no link available call is lost
+                System.out.println("Lost Call = "+arrival);
             }
+            ++CallCounter.processed;
+            if(this.getCallsToArrive().size()==0){
+                //to prevent empty for each loop exception when progress calls empty.
+                break;
+            }
+
+
         }
     }
+
 
 
     public Boolean addArrivalCallToProgress(Arrival arrival){

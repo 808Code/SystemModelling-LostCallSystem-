@@ -11,7 +11,7 @@ public class Runner {
 
             System.out.println("Current Clock="+Utility.clock++);
             Utility.pause();
-            if(Utility.clock==3000){
+            if(Utility.clock==4000){
                 break;
             }
             System.out.println("The Progress Queue:");
