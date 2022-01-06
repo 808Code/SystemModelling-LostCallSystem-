@@ -8,18 +8,25 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Call {
     private int max;
+    private int totalUsers;
 
     private ArrayList<Progress>callsInProgress;
     private ArrayList<Arrival>callsToArrive;
     //function to check callsInProgress and callsToArrive and remove add every sec
 
 
-    Call(){
+    Call(int totalLinks,int totalNumberofUsers){
         this.callsInProgress=new ArrayList<Progress>();
         this.callsToArrive=new ArrayList<Arrival>();
 
         //attributes of simulation
-        this.max=3;
+        this.max=totalLinks;//links
+        this.totalUsers=totalNumberofUsers;
+
+        Caller.callers=new ArrayList<Integer>();
+        for(int i=0;i<=totalUsers;i++){
+            Caller.callers.add(0);
+        }
 
         //here calls in progress:
 
@@ -50,9 +57,9 @@ public class Call {
 //              int length=20;
 //              int arrivalTime=1064;
 
-            int length =ThreadLocalRandom.current().nextInt(20,40);
+            int length =ThreadLocalRandom.current().nextInt(40,60);
 
-            int arrivalTime=ThreadLocalRandom.current().nextInt(1060,2000);
+            int arrivalTime=ThreadLocalRandom.current().nextInt(1060,1100);
             this.callsToArrive.add(new Arrival(from,to,length,arrivalTime));
         }
 
@@ -67,8 +74,10 @@ public class Call {
         //add progress object to calls to progress list
         //checking if both callers are free:
         if(Caller.checkCallPossibility(progress.getFrom(),progress.getTo())){
-            Caller.callers[progress.getFrom()]=1;
-            Caller.callers[progress.getTo()]=1;
+
+
+            Caller.callers.set(progress.getFrom(),1);
+            Caller.callers.set(progress.getTo(),1);
             this.callsInProgress.add(progress);
             return true;
         }
@@ -79,8 +88,8 @@ public class Call {
     }
 
     public void removeProgressFromCallsInProgress(Progress progress){
-        Caller.callers[progress.getFrom()]=0;
-        Caller.callers[progress.getTo()]=0;
+        Caller.callers.set(progress.getFrom(),0);
+        Caller.callers.set(progress.getTo(),0);
         this.callsInProgress.remove(progress);
         System.out.println("Call has successfully Ended:"+progress);
         ++CallCounter.completed;

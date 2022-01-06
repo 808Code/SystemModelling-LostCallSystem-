@@ -1,9 +1,17 @@
 import java.time.Clock;
+import java.util.Scanner;
 
 public class Runner {
     public static void main(String args[]){
-        Call call=new Call();
-        System.out.println(call);
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Enter Total Links :");
+        int totalLinks=scan.nextInt();
+
+        System.out.println("Enter Total Users :");
+        int totalUsers=scan.nextInt();
+
+        Call call=new Call(totalLinks,totalUsers);
+
         while(true){
 //            System.out.println(Caller.callers[1]);
             call.checkArrivalCalls();
