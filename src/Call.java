@@ -34,8 +34,8 @@ public class Call {
         Random ran = new Random();
         int firstCaller=1;
         int lastCaller=8;
-//        for (int i=0;i<=(ThreadLocalRandom.current().nextInt(20,30));i++){
-          for(int i=0;i<=10;i++){
+        for (int i=0;i<=(ThreadLocalRandom.current().nextInt(20,30));i++){
+//          for(int i=0;i<=10;i++){
 
 
             int from = ThreadLocalRandom.current().nextInt(firstCaller, lastCaller + 1);
@@ -47,9 +47,12 @@ public class Call {
                 }
                 to = ThreadLocalRandom.current().nextInt(firstCaller, lastCaller + 1);
             }
+//              int length=20;
+//              int arrivalTime=1064;
+
             int length =ThreadLocalRandom.current().nextInt(20,40);
-            int arrivalTime=ThreadLocalRandom.current().nextInt(1060,1070);
-//          int arrivalTime=ThreadLocalRandom.current().nextInt(1060,2000);
+
+            int arrivalTime=ThreadLocalRandom.current().nextInt(1060,2000);
             this.callsToArrive.add(new Arrival(from,to,length,arrivalTime));
         }
 
@@ -84,10 +87,18 @@ public class Call {
     }
 
     public void checkProgressCalls(){
+        ArrayList<Progress> progressOnCurrentClockToOut=new ArrayList<Progress>();
         if(this.getCallsInProgress().size()!=0){
-            try {
+
                 for (Progress progress : this.getCallsInProgress()) {
-//                    System.out.println(progress);
+                    if(progress.getEnd() == Utility.clock){
+                        progressOnCurrentClockToOut.add(progress);
+                    }
+                }
+
+                for(Progress progress:progressOnCurrentClockToOut){
+
+//
                     if (progress.getEnd() == Utility.clock) {
                         this.removeProgressFromCallsInProgress(progress);
                         if (this.getCallsInProgress().size() == 0) {
@@ -95,12 +106,10 @@ public class Call {
                             break;
                         }
                     }
-                }
-            }catch (ConcurrentModificationException exception){
-//                System.out.println(exception);
 
+                }
             }
-        }
+
     }
 
     public void checkArrivalCalls(){
