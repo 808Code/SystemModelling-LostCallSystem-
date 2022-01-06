@@ -27,12 +27,13 @@ public class Call {
 
         //here calls that arrive
         //dont put same arrival time.
+        //
         this.callsToArrive.add(new Arrival(3,6,30,1063));
-        this.callsToArrive.add(new Arrival(4,5,25,1174));
+        this.callsToArrive.add(new Arrival(4,5,25,1063));
         this.callsToArrive.add(new Arrival(5,6,20,1068));
         this.callsToArrive.add(new Arrival(1,4,60,1067));
         this.callsToArrive.add(new Arrival(2,5,42,1069));
-        this.callsToArrive.add(new Arrival(8,7,        33,1070));
+        this.callsToArrive.add(new Arrival(8,7,33,1070));
         this.callsToArrive.add(new Arrival(3,5,20,1176));
 
 
